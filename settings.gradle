@@ -1,0 +1,3 @@
+rootProject.name = "Example Application Udemy"
+include ':app'
+include ':core'
