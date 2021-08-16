@@ -5,6 +5,7 @@ import android.text.Editable
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.TextView
+import androidx.core.view.get
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import ar.com.udemy.exampleapp.R
@@ -32,9 +33,37 @@ class NoteFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentNoteBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        arguments?.let {
+            noteId = NoteFragmentArgs.fromBundle(it).noteId
+        }
+
+        if (noteId != 0L) {
+            viewModel.getNote(noteId)
+        }
+
+        configureViews()
+        configureViewModel()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.note_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu[0].isVisible = noteId != 0L
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -59,32 +88,6 @@ class NoteFragment : Fragment() {
         }
 
         return true
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentNoteBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        arguments?.let {
-            noteId = NoteFragmentArgs.fromBundle(it).noteId
-        }
-
-        if (noteId != 0L) {
-            viewModel.getNote(noteId)
-        } else {
-            
-        }
-
-        configureViews()
-        configureViewModel()
     }
 
     private fun configureViews() {

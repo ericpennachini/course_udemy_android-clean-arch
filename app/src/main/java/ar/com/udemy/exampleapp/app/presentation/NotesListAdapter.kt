@@ -31,7 +31,10 @@ class NotesListAdapter(
 
     override fun getItemCount() = notes.size
 
-    inner class NoteViewHolder(private val binding: ListItemNoteBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class NoteViewHolder(
+        private val binding: ListItemNoteBinding
+    ): RecyclerView.ViewHolder(binding.root) {
+
         @SuppressLint("SetTextI18n")
         fun bind(note: Note) {
             binding.tvNoteId.text = note.id.toString()
@@ -43,6 +46,7 @@ class NotesListAdapter(
                 action.onClick(note.id)
             }
         }
+
     }
 
 }
