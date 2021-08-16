@@ -10,7 +10,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class NotesListAdapter(
-    private val notes: MutableList<Note>
+    private val notes: MutableList<Note>,
+    private val action: ListAction
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
@@ -38,6 +39,9 @@ class NotesListAdapter(
             binding.tvNoteContentPreview.text = note.content
             val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(Date(note.updateTime))
             binding.tvLastUpdatedDate.text = "Last updated: $date"
+            binding.root.setOnClickListener {
+                action.onClick(note.id)
+            }
         }
     }
 

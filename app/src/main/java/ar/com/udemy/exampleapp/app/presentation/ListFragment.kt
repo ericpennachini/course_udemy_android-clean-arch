@@ -15,10 +15,13 @@ import ar.com.udemy.exampleapp.core.data.Resource
 import ar.com.udemy.exampleapp.databinding.FragmentListBinding
 import com.google.android.material.snackbar.Snackbar
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), ListAction {
 
     private lateinit var binding: FragmentListBinding
-    private val notesListAdapter = NotesListAdapter(mutableListOf())
+    private val notesListAdapter = NotesListAdapter(
+        notes = mutableListOf(),
+        action = this
+    )
 
     private val viewModel: ListViewModel by viewModels()
 
@@ -85,6 +88,10 @@ class ListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getAllNotes()
+    }
+
+    override fun onClick(id: Long) {
+        goToNoteDetails(id)
     }
 
 }
