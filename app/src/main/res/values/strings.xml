@@ -8,5 +8,6 @@
     <string name="new_note_content_text_input_label">Content</string>
 
     <string name="generic_error_message">Something went wrong…</string>
+    <string name="menu_delete_note_item_title_text">Delete note</string>
 
 </resources>
