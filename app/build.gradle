@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "ar.com.udemy.exampleapp"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion 24
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -24,6 +24,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -43,11 +48,14 @@ dependencies {
     implementation "com.google.android.material:material:$materialVersion"
 
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
-    implementation "android.arch.lifecycle:extensions:$lifecycleVersion"
+    implementation("android.arch.lifecycle:extensions:$lifecycleVersion")/* {
+        exclude group: "com.android.support", module: "support-compat-26.1.0-runtime"
+    }*/
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxVersion"
