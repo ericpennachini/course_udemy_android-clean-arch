@@ -6,15 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ar.com.udemy.exampleapp.core.data.Note
+import ar.com.udemy.exampleapp.core.data.Resource
 import ar.com.udemy.exampleapp.core.repository.NoteRepository
 import ar.com.udemy.exampleapp.core.usecase.AddNote
 import ar.com.udemy.exampleapp.core.usecase.GetAllNotes
 import ar.com.udemy.exampleapp.core.usecase.GetNote
 import ar.com.udemy.exampleapp.core.usecase.RemoveNote
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class NoteViewModel(application: Application): AndroidViewModel(application) {
 
@@ -27,8 +25,23 @@ class NoteViewModel(application: Application): AndroidViewModel(application) {
         RemoveNote(repository)
     )
 
+    private val _currentNoteLiveData = MutableLiveData<Resource<Note?>>()
+    val currentNoteLiveData: LiveData<Resource<Note?>> = _currentNoteLiveData
+
     private val _saved = MutableLiveData<Boolean>()
     val saved: LiveData<Boolean> = _saved
+
+    fun getNote(id: Long) {
+        viewModelScope.launch {
+            try {
+                _currentNoteLiveData.value = Resource.Loading()
+                val note = useCases.getNote(id)
+                _currentNoteLiveData.value = Resource.Success(note)
+            } catch (ex: Exception) {
+                _currentNoteLiveData.value = Resource.Error(ex)
+            }
+        }
+    }
 
     fun saveNote(note: Note) {
         viewModelScope.launch {

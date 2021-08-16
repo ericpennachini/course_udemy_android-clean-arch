@@ -75,7 +75,7 @@ class ListFragment : Fragment(), ListAction {
         binding.pbLoading.hide()
         Snackbar.make(
             binding.root,
-            getString(R.string.generic_error_message),
+            "${getString(R.string.generic_error_message)}: $errorMessage",
             Snackbar.LENGTH_LONG
         ).setAction("Retry") { viewModel.getAllNotes() }.show()
     }
