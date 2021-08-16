@@ -2,10 +2,8 @@ package ar.com.udemy.exampleapp.app.presentation
 
 import android.os.Bundle
 import android.text.Editable
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -14,6 +12,7 @@ import ar.com.udemy.exampleapp.app.framework.NoteViewModel
 import ar.com.udemy.exampleapp.core.data.Note
 import ar.com.udemy.exampleapp.core.data.Resource
 import ar.com.udemy.exampleapp.databinding.FragmentNoteBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
 class NoteFragment : Fragment() {
@@ -27,6 +26,40 @@ class NoteFragment : Fragment() {
     )
 
     private var noteId = 0L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.note_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.deleteNote -> {
+                context?.let {
+                    if (noteId != 0L) {
+                        MaterialAlertDialogBuilder(it)
+                            .setTitle("Delete note $noteId")
+                            .setMessage("Are you sure about this operation?")
+                            .setPositiveButton("Yes") { dialog, _ ->
+                                dialog.dismiss()
+                                viewModel.deleteNote(currentNote)
+                            }
+                            .setNegativeButton("No") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+                }
+            }
+        }
+
+        return true
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +77,11 @@ class NoteFragment : Fragment() {
             noteId = NoteFragmentArgs.fromBundle(it).noteId
         }
 
-        if (noteId != 0L) viewModel.getNote(noteId)
+        if (noteId != 0L) {
+            viewModel.getNote(noteId)
+        } else {
+            
+        }
 
         configureViews()
         configureViewModel()

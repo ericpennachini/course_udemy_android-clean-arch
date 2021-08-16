@@ -54,4 +54,15 @@ class NoteViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            try {
+                useCases.removeNote(note)
+                _saved.value = true
+            } catch (ex: Exception) {
+                _saved.value = false
+            }
+        }
+    }
+
 }
