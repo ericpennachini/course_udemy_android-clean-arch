@@ -40,6 +40,7 @@ class ListViewModel(
             try {
                 _notesLiveData.value = Resource.Loading()
                 val notes = useCases.getAllNotes()
+                notes.forEach { it.wordCount = useCases.getWordCount(it) }
                 _notesLiveData.value = Resource.Success(notes)
             } catch (ex: Exception) {
                 _notesLiveData.value = Resource.Error(ex)
